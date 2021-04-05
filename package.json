@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/MarceloSavian/bank_account_backend#readme",
   "devDependencies": {
+    "@shelf/jest-mongodb": "^1.2.3",
     "@types/jest": "^26.0.22",
     "@typescript-eslint/eslint-plugin": "^4.21.0",
     "eslint": "^7.23.0",
