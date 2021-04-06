@@ -49,5 +49,10 @@ describe('User Mongo Repository', () => {
       expect(user?.password).toBe(mockUserModel().password)
       expect(user?.roles).toEqual(mockUserModel().roles)
     })
+    test('Should return null if loadByEmail fails', async () => {
+      const { sut } = mockSut()
+      const account = await sut.loadByEmail('any_email@mail.com')
+      expect(account).toBeFalsy()
+    })
   })
 })
