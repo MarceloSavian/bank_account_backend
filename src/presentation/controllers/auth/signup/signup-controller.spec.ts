@@ -1,10 +1,10 @@
 import { SignUpController } from './signup-controller'
 import { HttpRequest, Validation } from '@/presentation/protocols'
-import { mockUserParams } from '@/domain/test'
+import { mockUserModel, mockUserParams } from '@/domain/test'
 import { AddUser } from '@/domain/usecases/user/add-user'
 import { mockAddUser } from '@/presentation/test/mock-add-user'
 import { mockValidation } from '@/presentation/test/mock-validation'
-import { badRequest, forbidden, serverError } from '@/presentation/helpers/http/http-helper'
+import { badRequest, forbidden, ok, serverError } from '@/presentation/helpers/http/http-helper'
 import { ServerError } from '@/presentation/errors'
 import { mockAuthentication } from '@/presentation/test/mock-authentication'
 import { Authentication } from '@/domain/usecases/user/authentication'
@@ -104,5 +104,12 @@ describe('SignUp Controller', () => {
     const response = await sut.handle(mockRequest())
 
     expect(response).toEqual(serverError(new Error()))
+  })
+  test('Should return 200 if valid data is provided', async () => {
+    const { sut } = mockSut()
+
+    const httpRequest = mockRequest()
+    const httpResponse = await sut.handle(httpRequest)
+    expect(httpResponse).toEqual(ok({ token: 'any_token', user: mockUserModel() }))
   })
 })
