@@ -1,7 +1,7 @@
 import { Collection } from 'mongodb'
 import { mongoHelper } from '../helpers/mongo-helper'
 import { UserMongoRepository } from './user-mongo-repository'
-import { mockUserParams } from '@/domain/test/mock-user'
+import { mockUserModel, mockUserParams } from '@/domain/test/mock-user'
 
 type SutTypes = {
   sut: UserMongoRepository
@@ -35,6 +35,19 @@ describe('User Mongo Repository', () => {
       expect(user.email).toBe(mockUserParams().email)
       expect(user.password).toBe(mockUserParams().password)
       expect(user.roles).toEqual(mockUserParams().roles)
+    })
+  })
+  describe('loadByEmail()', () => {
+    test('Should return an user on loadByEmail Success', async () => {
+      const { sut } = mockSut()
+      await userCollection.insertOne(mockUserModel())
+      const user = await sut.loadByEmail(mockUserModel().email)
+      expect(user).toBeTruthy()
+      expect(user?.id).toBeTruthy()
+      expect(user?.name).toBe(mockUserModel().name)
+      expect(user?.email).toBe(mockUserModel().email)
+      expect(user?.password).toBe(mockUserModel().password)
+      expect(user?.roles).toEqual(mockUserModel().roles)
     })
   })
 })
