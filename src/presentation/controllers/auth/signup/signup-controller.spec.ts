@@ -6,6 +6,8 @@ import { mockAddUser } from '@/presentation/test/mock-add-user'
 import { mockValidation } from '@/presentation/test/mock-validation'
 import { badRequest, serverError } from '@/presentation/helpers/http/http-helper'
 import { ServerError } from '@/presentation/errors'
+import { mockAuthentication } from '@/presentation/test/mock-authentication'
+import { Authentication } from '@/domain/usecases/user/authentication'
 
 const mockRequest = (): HttpRequest => ({
   body: {
@@ -21,16 +23,19 @@ type SutTypes = {
   sut: SignUpController
   addUserStub: AddUser
   validationStub: Validation
+  authenticationStub: Authentication
 }
 
 const mockSut = (): SutTypes => {
   const addUserStub = mockAddUser()
   const validationStub = mockValidation()
-  const sut = new SignUpController(addUserStub, validationStub)
+  const authenticationStub = mockAuthentication()
+  const sut = new SignUpController(addUserStub, validationStub, authenticationStub)
   return {
     sut,
     addUserStub,
-    validationStub
+    validationStub,
+    authenticationStub
   }
 }
 
@@ -71,5 +76,17 @@ describe('SignUp Controller', () => {
     const httpRequest = mockRequest()
     const httpResponse = await sut.handle(httpRequest)
     expect(httpResponse).toEqual(serverError(new ServerError('')))
+  })
+  test('Should call Authentication with correct values', async () => {
+    const { sut, authenticationStub } = mockSut()
+
+    const authSpy = jest.spyOn(authenticationStub, 'auth')
+
+    await sut.handle(mockRequest())
+
+    expect(authSpy).toHaveBeenCalledWith({
+      email: mockRequest().body.email,
+      password: mockRequest().body.password
+    })
   })
 })
