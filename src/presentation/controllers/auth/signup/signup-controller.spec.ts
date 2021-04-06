@@ -4,7 +4,7 @@ import { mockUserParams } from '@/domain/test'
 import { AddUser } from '@/domain/usecases/user/add-user'
 import { mockAddUser } from '@/presentation/test/mock-add-user'
 import { mockValidation } from '@/presentation/test/mock-validation'
-import { serverError } from '@/presentation/helpers/http/http-helper'
+import { badRequest, serverError } from '@/presentation/helpers/http/http-helper'
 import { ServerError } from '@/presentation/errors'
 
 const mockRequest = (): HttpRequest => ({
@@ -44,6 +44,14 @@ describe('SignUp Controller', () => {
 
     await sut.handle(httpRequest)
     expect(validateSpy).toHaveBeenCalledWith(httpRequest.body)
+  })
+  test('Should return 400 if validation returns an error', async () => {
+    const { sut, validationStub } = mockSut()
+
+    jest.spyOn(validationStub, 'validate').mockReturnValueOnce(new Error())
+    const httpRequest = mockRequest()
+    const httpResponse = await sut.handle(httpRequest)
+    expect(httpResponse).toEqual(badRequest(new Error()))
   })
   test('Should call AddUser with correct values', async () => {
     const { sut, addUserStub } = mockSut()
