@@ -1,3 +1,4 @@
+import { Encrypter } from '@/data/protocols/criptography/encrypter'
 import { HashCompare } from '@/data/protocols/criptography/hash-comparer'
 import { LoadUserByEmailRepository } from '@/data/protocols/db/user/load-user-by-email-repository'
 import { Authentication, AuthenticationParams, AuthenticationResponse } from '@/domain/usecases/user/authentication'
@@ -5,7 +6,8 @@ import { Authentication, AuthenticationParams, AuthenticationResponse } from '@/
 export class DbAuthentication implements Authentication {
   constructor (
     private readonly loadUserByEmailRepository: LoadUserByEmailRepository,
-    private readonly hashCompare: HashCompare
+    private readonly hashCompare: HashCompare,
+    private readonly encrypter: Encrypter
   ) {}
 
   async auth (authentication: AuthenticationParams): Promise<AuthenticationResponse | null> {
@@ -17,6 +19,8 @@ export class DbAuthentication implements Authentication {
 
     if (!hash) return null
 
-    return { user, token: '' }
+    const token = await this.encrypter.encrypt(user.id)
+
+    return { user, token }
   }
 }
