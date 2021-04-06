@@ -1,8 +1,8 @@
 import { Encrypter } from '@/data/protocols/criptography/encrypter'
 import { HashCompare } from '@/data/protocols/criptography/hash-comparer'
+import { AddSessionRepository } from '@/data/protocols/db/session/add-session-repository'
 import { LoadUserByEmailRepository } from '@/data/protocols/db/user/load-user-by-email-repository'
-import { mockEncrypter, mockHashCompare } from '@/data/test'
-import { mockLoadUserByEmailRepository } from '@/data/test/mock-db-user'
+import { mockEncrypter, mockHashCompare, mockAddSessionRepository, mockLoadUserByEmailRepository } from '@/data/test'
 import { mockAuthenticationParams, mockUserModel } from '@/domain/test'
 import { DbAuthentication } from './db-authentication'
 
@@ -11,22 +11,26 @@ import { DbAuthentication } from './db-authentication'
     loadUserByEmailRepositoryStub: LoadUserByEmailRepository
     hashCompareStub: HashCompare
     encrypterStub: Encrypter
+    addSessionRepositoryStub: AddSessionRepository
   }
 
 const mockSut = (): SutTypes => {
   const loadUserByEmailRepositoryStub = mockLoadUserByEmailRepository()
   const hashCompareStub = mockHashCompare()
   const encrypterStub = mockEncrypter()
+  const addSessionRepositoryStub = mockAddSessionRepository()
   const sut = new DbAuthentication(
     loadUserByEmailRepositoryStub,
     hashCompareStub,
-    encrypterStub
+    encrypterStub,
+    addSessionRepositoryStub
   )
   return {
     sut,
     loadUserByEmailRepositoryStub,
     hashCompareStub,
-    encrypterStub
+    encrypterStub,
+    addSessionRepositoryStub
   }
 }
 
@@ -78,5 +82,13 @@ describe('DbAuthentication UseCase', () => {
     jest.spyOn(encrypterStub, 'encrypt').mockRejectedValueOnce(new Error())
     const promise = sut.auth(mockAuthenticationParams())
     await expect(promise).rejects.toThrow()
+  })
+  test('Should call AddSessionRepository with correct values', async () => {
+    const { sut, addSessionRepositoryStub } = mockSut()
+    const updateSpy = jest.spyOn(addSessionRepositoryStub, 'add')
+    const date = new Date()
+    date.setDate(date.getDate() + 1)
+    await sut.auth(mockAuthenticationParams())
+    expect(updateSpy).toBeCalledWith('any_token', date, mockUserModel().id)
   })
 })
