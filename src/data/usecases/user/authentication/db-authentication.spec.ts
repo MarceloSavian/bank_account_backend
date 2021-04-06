@@ -71,7 +71,7 @@ describe('DbAuthentication UseCase', () => {
     const { sut, encrypterStub } = mockSut()
     const loadSpy = jest.spyOn(encrypterStub, 'encrypt')
     await sut.auth(mockAuthenticationParams())
-    expect(loadSpy).toBeCalledWith(mockUserModel().id)
+    expect(loadSpy).toBeCalledWith({ id: mockUserModel().id }, '24h')
   })
   test('Should throw if Encrypter throws', async () => {
     const { sut, encrypterStub } = mockSut()

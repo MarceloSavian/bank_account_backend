@@ -19,7 +19,7 @@ export class DbAuthentication implements Authentication {
 
     if (!hash) return null
 
-    const token = await this.encrypter.encrypt(user.id)
+    const token = await this.encrypter.encrypt({ id: user.id }, '24h')// Token com expiração de 24h
 
     return { user, token }
   }
