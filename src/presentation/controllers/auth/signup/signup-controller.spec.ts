@@ -35,6 +35,16 @@ const mockSut = (): SutTypes => {
 }
 
 describe('SignUp Controller', () => {
+  test('Should call Validation with correct values', async () => {
+    const { sut, validationStub } = mockSut()
+
+    const validateSpy = jest.spyOn(validationStub, 'validate')
+
+    const httpRequest = mockRequest()
+
+    await sut.handle(httpRequest)
+    expect(validateSpy).toHaveBeenCalledWith(httpRequest.body)
+  })
   test('Should call AddUser with correct values', async () => {
     const { sut, addUserStub } = mockSut()
 
