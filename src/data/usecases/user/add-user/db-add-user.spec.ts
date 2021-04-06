@@ -6,6 +6,7 @@ import { mockAddUserRepository, mockLoadUserByEmailRepository } from '@/data/tes
 import { LoadUserByEmailRepository } from '@/data/protocols/db/user/load-user-by-email-repository'
 import { EmailInUseError } from '@/presentation/errors'
 import { AddUserRepository } from '@/data/protocols/db/user/add-user-repository'
+import MockDate from 'mockdate'
 
 type SutTypes = {
   sut: DbAddUser
@@ -28,6 +29,12 @@ const mockSut = (): SutTypes => {
 }
 
 describe('DbAddUser UseCase', () => {
+  beforeAll(() => {
+    MockDate.set(new Date())
+  })
+  afterAll(() => {
+    MockDate.reset()
+  })
   test('Should call LoadUserByEmailRepository with correct email', async () => {
     const { sut, loadUserByEmailRepositoryStub } = mockSut()
     const loadSpy = jest.spyOn(loadUserByEmailRepositoryStub, 'loadByEmail')
