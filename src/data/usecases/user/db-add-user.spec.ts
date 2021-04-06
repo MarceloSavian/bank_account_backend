@@ -1,9 +1,10 @@
 import { DbAddUser } from './db-add-user'
-import { mockUserParams } from '@/domain/test'
+import { mockUserModel, mockUserParams } from '@/domain/test'
 import { mockHasher } from '@/data/test'
 import { Hasher } from '@/data/protocols/criptography/hasher'
 import { mockLoadUserByEmailRepository } from '@/data/test/mock-db-user'
 import { LoadUserByEmailRepository } from '@/data/protocols/db/user/load-user-by-email-repository'
+import { EmailInUseError } from '@/presentation/errors'
 
 type SutTypes = {
   sut: DbAddUser
@@ -28,6 +29,12 @@ describe('DbAddUser UseCase', () => {
     const loadSpy = jest.spyOn(loadUserByEmailRepositoryStub, 'loadByEmail')
     await sut.add(mockUserParams())
     expect(loadSpy).toBeCalledWith(mockUserParams().email)
+  })
+  test('Should return error if LoadUserByEmailRepository returns an account', async () => {
+    const { sut, loadUserByEmailRepositoryStub } = mockSut()
+    jest.spyOn(loadUserByEmailRepositoryStub, 'loadByEmail').mockResolvedValueOnce(mockUserModel())
+    const result = await sut.add(mockUserParams())
+    expect(result.error).toEqual(new EmailInUseError())
   })
   test('Should call Hasher with correct password', async () => {
     const { sut, hasherStub } = mockSut()
