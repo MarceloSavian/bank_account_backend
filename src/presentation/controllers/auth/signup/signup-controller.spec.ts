@@ -4,7 +4,7 @@ import { mockUserParams } from '@/domain/test'
 import { AddUser } from '@/domain/usecases/user/add-user'
 import { mockAddUser } from '@/presentation/test/mock-add-user'
 import { mockValidation } from '@/presentation/test/mock-validation'
-import { badRequest, serverError } from '@/presentation/helpers/http/http-helper'
+import { badRequest, forbidden, serverError } from '@/presentation/helpers/http/http-helper'
 import { ServerError } from '@/presentation/errors'
 import { mockAuthentication } from '@/presentation/test/mock-authentication'
 import { Authentication } from '@/domain/usecases/user/authentication'
@@ -76,6 +76,13 @@ describe('SignUp Controller', () => {
     const httpRequest = mockRequest()
     const httpResponse = await sut.handle(httpRequest)
     expect(httpResponse).toEqual(serverError(new ServerError('')))
+  })
+  test('Should return 403 if AddUser returns an error', async () => {
+    const { sut, addUserStub } = mockSut()
+    jest.spyOn(addUserStub, 'add').mockResolvedValueOnce({ error: new Error() })
+    const httpRequest = mockRequest()
+    const httpResponse = await sut.handle(httpRequest)
+    expect(httpResponse).toEqual(forbidden(new Error()))
   })
   test('Should call Authentication with correct values', async () => {
     const { sut, authenticationStub } = mockSut()
