@@ -67,4 +67,11 @@ describe('DbAddUser UseCase', () => {
       roles: mockUserParams().roles
     })
   })
+  test('Should throw if AddUserRepository throws', async () => {
+    const { sut, addUserRepositoryStub } = mockSut()
+
+    jest.spyOn(addUserRepositoryStub, 'add').mockRejectedValueOnce(new Error())
+    const promise = sut.add(mockUserParams())
+    await expect(promise).rejects.toThrow()
+  })
 })
