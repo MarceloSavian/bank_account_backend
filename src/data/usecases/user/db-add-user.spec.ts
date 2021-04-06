@@ -2,24 +2,28 @@ import { DbAddUser } from './db-add-user'
 import { mockUserModel, mockUserParams } from '@/domain/test'
 import { mockHasher } from '@/data/test'
 import { Hasher } from '@/data/protocols/criptography/hasher'
-import { mockLoadUserByEmailRepository } from '@/data/test/mock-db-user'
+import { mockAddUserRepository, mockLoadUserByEmailRepository } from '@/data/test/mock-db-user'
 import { LoadUserByEmailRepository } from '@/data/protocols/db/user/load-user-by-email-repository'
 import { EmailInUseError } from '@/presentation/errors'
+import { AddUserRepository } from '@/data/protocols/db/user/add-user-repository'
 
 type SutTypes = {
   sut: DbAddUser
   hasherStub: Hasher
   loadUserByEmailRepositoryStub: LoadUserByEmailRepository
+  addUserRepositoryStub: AddUserRepository
 }
 
 const mockSut = (): SutTypes => {
   const hasherStub = mockHasher()
   const loadUserByEmailRepositoryStub = mockLoadUserByEmailRepository()
   jest.spyOn(loadUserByEmailRepositoryStub, 'loadByEmail').mockResolvedValue(null)
+  const addUserRepositoryStub = mockAddUserRepository()
   return {
-    sut: new DbAddUser(hasherStub, loadUserByEmailRepositoryStub),
+    sut: new DbAddUser(hasherStub, loadUserByEmailRepositoryStub, addUserRepositoryStub),
     hasherStub,
-    loadUserByEmailRepositoryStub
+    loadUserByEmailRepositoryStub,
+    addUserRepositoryStub
   }
 }
 
@@ -30,7 +34,7 @@ describe('DbAddUser UseCase', () => {
     await sut.add(mockUserParams())
     expect(loadSpy).toBeCalledWith(mockUserParams().email)
   })
-  test('Should return error if LoadUserByEmailRepository returns an account', async () => {
+  test('Should return error if LoadUserByEmailRepository returns an user', async () => {
     const { sut, loadUserByEmailRepositoryStub } = mockSut()
     jest.spyOn(loadUserByEmailRepositoryStub, 'loadByEmail').mockResolvedValueOnce(mockUserModel())
     const result = await sut.add(mockUserParams())
@@ -49,5 +53,18 @@ describe('DbAddUser UseCase', () => {
     jest.spyOn(hasherStub, 'hash').mockReturnValueOnce(Promise.reject(new Error()))
     const promise = sut.add(mockUserParams())
     await expect(promise).rejects.toThrow()
+  })
+  test('Should call AddUserRepository with correct values', async () => {
+    const { sut, addUserRepositoryStub } = mockSut()
+
+    const addSpy = jest.spyOn(addUserRepositoryStub, 'add')
+
+    await sut.add(mockUserParams())
+    expect(addSpy).toHaveBeenCalledWith({
+      name: mockUserParams().name,
+      email: mockUserParams().email,
+      password: 'hashed_value',
+      roles: mockUserParams().roles
+    })
   })
 })

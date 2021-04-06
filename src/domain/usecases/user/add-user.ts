@@ -4,6 +4,7 @@ export type AddUserParams = {
   name: string
   email: string
   password: string
+  roles: string[]
 }
 
 export type AddUserResolve = {
