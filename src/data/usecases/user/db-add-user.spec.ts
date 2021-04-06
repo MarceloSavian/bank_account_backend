@@ -74,4 +74,9 @@ describe('DbAddUser UseCase', () => {
     const promise = sut.add(mockUserParams())
     await expect(promise).rejects.toThrow()
   })
+  test('Should return an user on success', async () => {
+    const { sut } = mockSut()
+    const user = await sut.add(mockUserParams())
+    expect(user).toEqual({ user: mockUserModel() })
+  })
 })
