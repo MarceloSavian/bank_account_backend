@@ -1,24 +1,35 @@
 import { AddUser } from '@/domain/usecases/user/add-user'
-import { forbidden, ok } from '@/presentation/helpers/http/http-helper'
-import { Controller, HttpRequest, HttpResponse } from '@/presentation/protocols'
+import { badRequest, forbidden, ok, serverError } from '@/presentation/helpers/http/http-helper'
+import { Controller, HttpRequest, HttpResponse, Validation } from '@/presentation/protocols'
 
 export class SignUpController implements Controller {
   constructor (
-    private readonly addUser: AddUser
+    private readonly addUser: AddUser,
+    private readonly validation: Validation
   ) { }
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
-    const { name, email, password, roles } = httpRequest.body
+    try {
+      const error = this.validation.validate(httpRequest.body)
 
-    const response = await this.addUser.add({
-      name,
-      email,
-      password,
-      roles
-    })
+      if (error) {
+        return badRequest(error)
+      }
 
-    if (response.error) return forbidden(response.error)
+      const { name, email, password, roles } = httpRequest.body
 
-    return ok(response.user)
+      const response = await this.addUser.add({
+        name,
+        email,
+        password,
+        roles
+      })
+
+      if (response.error) return forbidden(response.error)
+
+      return ok(response.user)
+    } catch (error) {
+      return serverError(error)
+    }
   }
 }

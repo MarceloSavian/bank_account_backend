@@ -1,8 +1,11 @@
 import { SignUpController } from './signup-controller'
-import { HttpRequest } from '@/presentation/protocols'
+import { HttpRequest, Validation } from '@/presentation/protocols'
 import { mockUserParams } from '@/domain/test'
 import { AddUser } from '@/domain/usecases/user/add-user'
 import { mockAddUser } from '@/presentation/test/mock-add-user'
+import { mockValidation } from '@/presentation/test/mock-validation'
+import { serverError } from '@/presentation/helpers/http/http-helper'
+import { ServerError } from '@/presentation/errors'
 
 const mockRequest = (): HttpRequest => ({
   body: {
@@ -17,14 +20,17 @@ const mockRequest = (): HttpRequest => ({
 type SutTypes = {
   sut: SignUpController
   addUserStub: AddUser
+  validationStub: Validation
 }
 
 const mockSut = (): SutTypes => {
   const addUserStub = mockAddUser()
-  const sut = new SignUpController(addUserStub)
+  const validationStub = mockValidation()
+  const sut = new SignUpController(addUserStub, validationStub)
   return {
     sut,
-    addUserStub
+    addUserStub,
+    validationStub
   }
 }
 
@@ -38,5 +44,14 @@ describe('SignUp Controller', () => {
 
     await sut.handle(httpRequest)
     expect(addSpy).toHaveBeenCalledWith(mockUserParams())
+  })
+  test('Should return 500 if AddUser throws', async () => {
+    const { sut, addUserStub } = mockSut()
+
+    jest.spyOn(addUserStub, 'add').mockImplementationOnce(async () => { throw new Error() })
+
+    const httpRequest = mockRequest()
+    const httpResponse = await sut.handle(httpRequest)
+    expect(httpResponse).toEqual(serverError(new ServerError('')))
   })
 })
