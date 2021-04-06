@@ -11,5 +11,5 @@ export type AuthenticationResponse = {
 }
 
 export interface Authentication {
-  auth: (authentication: AuthenticationParams) => Promise<AuthenticationResponse>
+  auth: (authentication: AuthenticationParams) => Promise<AuthenticationResponse | null>
 }

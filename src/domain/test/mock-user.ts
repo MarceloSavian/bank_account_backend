@@ -1,5 +1,6 @@
 import { AddUserParams } from '../usecases/user/add-user'
 import { UserModel } from '../models/user'
+import { AuthenticationParams } from '../usecases/user/authentication'
 
 export const mockUserParams = (): AddUserParams => ({
   name: 'any_name',
@@ -11,4 +12,9 @@ export const mockUserParams = (): AddUserParams => ({
 export const mockUserModel = (): UserModel => ({
   id: 'any_id',
   ...mockUserParams()
+})
+
+export const mockAuthenticationParams = (): AuthenticationParams => ({
+  email: 'any_email@mail.com',
+  password: 'any_password'
 })
