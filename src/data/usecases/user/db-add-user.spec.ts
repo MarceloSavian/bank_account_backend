@@ -2,21 +2,33 @@ import { DbAddUser } from './db-add-user'
 import { mockUserParams } from '@/domain/test'
 import { mockHasher } from '@/data/test'
 import { Hasher } from '@/data/protocols/criptography/hasher'
+import { mockLoadUserByEmailRepository } from '@/data/test/mock-db-user'
+import { LoadUserByEmailRepository } from '@/data/protocols/db/user/load-user-by-email-repository'
 
 type SutTypes = {
   sut: DbAddUser
   hasherStub: Hasher
+  loadUserByEmailRepositoryStub: LoadUserByEmailRepository
 }
 
 const mockSut = (): SutTypes => {
   const hasherStub = mockHasher()
+  const loadUserByEmailRepositoryStub = mockLoadUserByEmailRepository()
+  jest.spyOn(loadUserByEmailRepositoryStub, 'loadByEmail').mockResolvedValue(null)
   return {
-    sut: new DbAddUser(hasherStub),
-    hasherStub
+    sut: new DbAddUser(hasherStub, loadUserByEmailRepositoryStub),
+    hasherStub,
+    loadUserByEmailRepositoryStub
   }
 }
 
 describe('DbAddUser UseCase', () => {
+  test('Should call LoadUserByEmailRepository with correct email', async () => {
+    const { sut, loadUserByEmailRepositoryStub } = mockSut()
+    const loadSpy = jest.spyOn(loadUserByEmailRepositoryStub, 'loadByEmail')
+    await sut.add(mockUserParams())
+    expect(loadSpy).toBeCalledWith(mockUserParams().email)
+  })
   test('Should call Hasher with correct password', async () => {
     const { sut, hasherStub } = mockSut()
 
