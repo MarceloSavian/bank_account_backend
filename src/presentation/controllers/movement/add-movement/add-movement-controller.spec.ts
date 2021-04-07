@@ -5,6 +5,7 @@ import { HttpRequest, Validation } from '@/presentation/protocols'
 import { mockAddMovement } from '@/presentation/test/mock-add-movement'
 import { mockValidation } from '@/validation/test'
 import { AddMovementController } from './add-movement-controller'
+import MockDate from 'mockdate'
 
 type SutTypes = {
   sut: AddMovementController
@@ -15,15 +16,15 @@ type SutTypes = {
 const mockRequest = (): HttpRequest => ({
   body: {
     accountId: mockMovementParams().accountId,
-    password: mockMovementParams().movementType,
-    passwordConfirmation: mockMovementParams().value
+    movementType: mockMovementParams().movementType,
+    value: mockMovementParams().value
   }
 })
 
 const mockSut = (): SutTypes => {
   const addMovementStub = mockAddMovement()
   const validationStub = mockValidation()
-  const sut = new AddMovementController(validationStub)
+  const sut = new AddMovementController(validationStub, addMovementStub)
   return {
     sut,
     addMovementStub,
@@ -32,6 +33,12 @@ const mockSut = (): SutTypes => {
 }
 
 describe('AddMovementController', () => {
+  beforeAll(() => {
+    MockDate.set(new Date())
+  })
+  afterAll(() => {
+    MockDate.reset()
+  })
   test('Should call Validation with correct values', async () => {
     const { sut, validationStub } = mockSut()
 
@@ -49,5 +56,18 @@ describe('AddMovementController', () => {
     const httpRequest = mockRequest()
     const httpResponse = await sut.handle(httpRequest)
     expect(httpResponse).toEqual(badRequest(new Error()))
+  })
+  test('Should call AddMovement with correct values', async () => {
+    const { sut, addMovementStub } = mockSut()
+
+    const addSpy = jest.spyOn(addMovementStub, 'add')
+    const httpRequest = mockRequest()
+    await sut.handle(httpRequest)
+    expect(addSpy).toHaveBeenCalledWith({
+      accountId: mockMovementParams().accountId,
+      movementType: mockMovementParams().movementType,
+      value: mockMovementParams().value,
+      date: new Date()
+    })
   })
 })
