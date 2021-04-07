@@ -28,4 +28,9 @@ describe('DbAddAccount', () => {
     const promise = sut.add('any_id')
     await expect(promise).rejects.toThrow()
   })
+  test('should returns null if succeds', async () => {
+    const { sut } = mockSut()
+    const value = await sut.add('any_id')
+    expect(value).toBeFalsy()
+  })
 })
