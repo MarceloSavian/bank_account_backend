@@ -20,6 +20,8 @@ export class DbAddMovement implements AddMovement {
 
     if (!movementType) return new InvalidParamError('movementType')
 
+    if (movementType.type === 'out' && movementData.value > account.balance) return new InvalidParamError('value')
+
     await this.addMovementRepository.add(movementData)
     return null
   }

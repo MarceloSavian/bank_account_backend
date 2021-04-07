@@ -8,6 +8,7 @@ import { mockGetAccountRepository } from '@/data/test/mock-db-account'
 import { mockGetMovementTypeRepository } from '@/data/test/mock-movement-type'
 import { GetMovementTypeRepository } from '@/data/protocols/db/movementType/GetMovementTypeRepository'
 import { InvalidParamError } from '@/presentation/errors'
+import { mockMovementTypeOut } from '@/domain/test/mock-movement-type'
 
 type SutTypes = {
   sut: DbAddMovement
@@ -64,6 +65,12 @@ describe('DbAddMovement', () => {
     jest.spyOn(getAccountRepositoryStub, 'getById').mockResolvedValueOnce(null)
     const result = await sut.add(mockMovementParams())
     expect(result).toEqual(new InvalidParamError('accountId'))
+  })
+  test('Should returns error if Movement value is lower than balance', async () => {
+    const { sut, getMovementTypeRepositoryStub } = mockSut()
+    jest.spyOn(getMovementTypeRepositoryStub, 'getById').mockResolvedValueOnce(mockMovementTypeOut())
+    const result = await sut.add(mockMovementParams())
+    expect(result).toEqual(new InvalidParamError('value'))
   })
   test('Should throws if GetAccountRepository throws', async () => {
     const { sut, getAccountRepositoryStub } = mockSut()
