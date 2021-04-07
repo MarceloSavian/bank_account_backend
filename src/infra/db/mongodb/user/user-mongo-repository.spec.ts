@@ -55,4 +55,18 @@ describe('User Mongo Repository', () => {
       expect(account).toBeFalsy()
     })
   })
+  describe('loadById()', () => {
+    test('Should return an user on loadById Success', async () => {
+      const { sut } = mockSut()
+      const result = await userCollection.insertOne(mockUserModel())
+      const id = mongoHelper.map(result.ops[0]).id
+      const user = await sut.loadById(id)
+      expect(user).toBeTruthy()
+      expect(user?.id).toBeTruthy()
+      expect(user?.name).toBe(mockUserModel().name)
+      expect(user?.email).toBe(mockUserModel().email)
+      expect(user?.password).toBe(mockUserModel().password)
+      expect(user?.roles).toEqual(mockUserModel().roles)
+    })
+  })
 })

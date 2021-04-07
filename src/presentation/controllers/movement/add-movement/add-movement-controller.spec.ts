@@ -1,6 +1,6 @@
 import { mockMovementParams } from '@/domain/test/mock-movement'
 import { AddMovement } from '@/domain/usecases/movement/add-movement'
-import { badRequest } from '@/presentation/helpers/http/http-helper'
+import { badRequest, serverError } from '@/presentation/helpers/http/http-helper'
 import { HttpRequest, Validation } from '@/presentation/protocols'
 import { mockAddMovement } from '@/presentation/test/mock-add-movement'
 import { mockValidation } from '@/validation/test'
@@ -78,5 +78,12 @@ describe('AddMovementController', () => {
     const httpRequest = mockRequest()
     const res = await sut.handle(httpRequest)
     expect(res).toEqual(badRequest(new InvalidParamError('any')))
+  })
+  test('Should returns 500 if AddMovement throws', async () => {
+    const { sut, addMovementStub } = mockSut()
+    jest.spyOn(addMovementStub, 'add').mockRejectedValueOnce(new Error())
+    const httpRequest = mockRequest()
+    const res = await sut.handle(httpRequest)
+    expect(res).toEqual(serverError(new Error()))
   })
 })

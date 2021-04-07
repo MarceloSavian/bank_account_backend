@@ -3,7 +3,7 @@ import request from 'supertest'
 import { mongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper'
 import app from '../config/app'
 
-let accountCollection: Collection
+let userCollection: Collection
 
 describe('Auth routes', () => {
   beforeAll(async () => {
@@ -13,8 +13,8 @@ describe('Auth routes', () => {
     await mongoHelper.disconnect()
   })
   beforeEach(async () => {
-    accountCollection = await mongoHelper.getCollection('users')
-    await accountCollection.deleteMany({})
+    userCollection = await mongoHelper.getCollection('users')
+    await userCollection.deleteMany({})
   })
   describe('POST /signup', () => {
     test('Should return 200 on signup', async () => {
