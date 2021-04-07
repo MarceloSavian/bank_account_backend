@@ -5,14 +5,15 @@ import { LoadUserByEmailRepository } from '@/data/protocols/db/user/load-user-by
 import { mockEncrypter, mockHashCompare, mockAddSessionRepository, mockLoadUserByEmailRepository } from '@/data/test'
 import { mockAuthenticationParams, mockUserModel } from '@/domain/test'
 import { DbAuthentication } from './db-authentication'
+import MockDate from 'mockdate'
 
-  type SutTypes = {
-    sut: DbAuthentication
-    loadUserByEmailRepositoryStub: LoadUserByEmailRepository
-    hashCompareStub: HashCompare
-    encrypterStub: Encrypter
-    addSessionRepositoryStub: AddSessionRepository
-  }
+type SutTypes = {
+  sut: DbAuthentication
+  loadUserByEmailRepositoryStub: LoadUserByEmailRepository
+  hashCompareStub: HashCompare
+  encrypterStub: Encrypter
+  addSessionRepositoryStub: AddSessionRepository
+}
 
 const mockSut = (): SutTypes => {
   const loadUserByEmailRepositoryStub = mockLoadUserByEmailRepository()
@@ -35,6 +36,12 @@ const mockSut = (): SutTypes => {
 }
 
 describe('DbAuthentication UseCase', () => {
+  beforeAll(() => {
+    MockDate.set(new Date())
+  })
+  afterAll(() => {
+    MockDate.reset()
+  })
   test('Should call LoadUserByEmailRepository with correct email', async () => {
     const { sut, loadUserByEmailRepositoryStub } = mockSut()
     const loadSpy = jest.spyOn(loadUserByEmailRepositoryStub, 'loadByEmail')
