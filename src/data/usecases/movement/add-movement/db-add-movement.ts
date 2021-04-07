@@ -16,7 +16,10 @@ export class DbAddMovement implements AddMovement {
 
     if (!account) return new InvalidParamError('accountId')
 
-    await this.getMovementTypeRepository.getById(movementData.movementType)
+    const movementType = await this.getMovementTypeRepository.getById(movementData.movementType)
+
+    if (!movementType) return new InvalidParamError('movementType')
+
     await this.addMovementRepository.add(movementData)
     return null
   }

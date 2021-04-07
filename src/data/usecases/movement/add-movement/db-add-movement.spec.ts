@@ -47,6 +47,12 @@ describe('DbAddMovement', () => {
     const promise = sut.add(mockMovementParams())
     await expect(promise).rejects.toThrow()
   })
+  test('Should returns error if GetMovementTypesRepository returns null', async () => {
+    const { sut, getMovementTypeRepositoryStub } = mockSut()
+    jest.spyOn(getMovementTypeRepositoryStub, 'getById').mockResolvedValueOnce(null)
+    const result = await sut.add(mockMovementParams())
+    expect(result).toEqual(new InvalidParamError('movementType'))
+  })
   test('Should call GetAccountRepository with correct values', async () => {
     const { sut, getAccountRepositoryStub } = mockSut()
     const getSpy = jest.spyOn(getAccountRepositoryStub, 'getById')
