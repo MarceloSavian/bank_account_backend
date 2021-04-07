@@ -1,3 +1,4 @@
+import { Decrypter } from '../protocols/criptography/decrypter'
 import { Encrypter } from '../protocols/criptography/encrypter'
 import { HashCompare } from '../protocols/criptography/hash-comparer'
 import { Hasher } from '../protocols/criptography/hasher'
@@ -27,4 +28,13 @@ export const mockEncrypter = (): Encrypter => {
     }
   }
   return new EncrypterStub()
+}
+
+export const mockDecrypter = (): Decrypter => {
+  class DecrypterStub implements Decrypter {
+    async decrypt (): Promise<string | object | null> {
+      return 'any_value'
+    }
+  }
+  return new DecrypterStub()
 }
