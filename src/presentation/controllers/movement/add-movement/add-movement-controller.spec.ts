@@ -1,5 +1,6 @@
 import { mockMovementParams } from '@/domain/test/mock-movement'
 import { AddMovement } from '@/domain/usecases/movement/add-movement'
+import { badRequest } from '@/presentation/helpers/http/http-helper'
 import { HttpRequest, Validation } from '@/presentation/protocols'
 import { mockAddMovement } from '@/presentation/test/mock-add-movement'
 import { mockValidation } from '@/validation/test'
@@ -40,5 +41,13 @@ describe('AddMovementController', () => {
 
     await sut.handle(httpRequest)
     expect(validateSpy).toHaveBeenCalledWith(httpRequest.body)
+  })
+  test('Should return 400 if validation returns an error', async () => {
+    const { sut, validationStub } = mockSut()
+
+    jest.spyOn(validationStub, 'validate').mockReturnValueOnce(new Error())
+    const httpRequest = mockRequest()
+    const httpResponse = await sut.handle(httpRequest)
+    expect(httpResponse).toEqual(badRequest(new Error()))
   })
 })
