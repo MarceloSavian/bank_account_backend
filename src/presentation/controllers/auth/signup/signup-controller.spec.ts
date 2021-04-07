@@ -8,6 +8,8 @@ import { badRequest, forbidden, ok, serverError } from '@/presentation/helpers/h
 import { ServerError } from '@/presentation/errors'
 import { mockAuthentication } from '@/presentation/test/mock-authentication'
 import { Authentication } from '@/domain/usecases/user/authentication'
+import { AddAccount } from '@/domain/usecases/account/add-account'
+import { mockAddAccount } from '@/presentation/test/mock-add-account'
 
 const mockRequest = (): HttpRequest => ({
   body: {
@@ -24,18 +26,21 @@ type SutTypes = {
   addUserStub: AddUser
   validationStub: Validation
   authenticationStub: Authentication
+  addAccountStub: AddAccount
 }
 
 const mockSut = (): SutTypes => {
   const addUserStub = mockAddUser()
   const validationStub = mockValidation()
   const authenticationStub = mockAuthentication()
-  const sut = new SignUpController(addUserStub, validationStub, authenticationStub)
+  const addAccountStub = mockAddAccount()
+  const sut = new SignUpController(addUserStub, validationStub, authenticationStub, addAccountStub)
   return {
     sut,
     addUserStub,
     validationStub,
-    authenticationStub
+    authenticationStub,
+    addAccountStub
   }
 }
 
@@ -104,6 +109,15 @@ describe('SignUp Controller', () => {
     const response = await sut.handle(mockRequest())
 
     expect(response).toEqual(serverError(new Error()))
+  })
+  test('Should call AddAccount with correct values', async () => {
+    const { sut, addAccountStub } = mockSut()
+
+    const addSpy = jest.spyOn(addAccountStub, 'add')
+
+    await sut.handle(mockRequest())
+
+    expect(addSpy).toHaveBeenCalledWith(mockUserModel().id)
   })
   test('Should return 200 if valid data is provided', async () => {
     const { sut } = mockSut()
