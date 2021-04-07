@@ -13,7 +13,7 @@ describe('Auth routes', () => {
     await mongoHelper.disconnect()
   })
   beforeEach(async () => {
-    accountCollection = await mongoHelper.getCollection('accounts')
+    accountCollection = await mongoHelper.getCollection('users')
     await accountCollection.deleteMany({})
   })
   describe('POST /signup', () => {
@@ -28,6 +28,35 @@ describe('Auth routes', () => {
           roles: ['admin']
         })
         .expect(200)
+    })
+  })
+  describe('POST /login', () => {
+    test('Should return 200 on login', async () => {
+      await request(app)
+        .post('/api/signup')
+        .send({
+          name: 'Marcelo',
+          email: 'teste@gmail.com',
+          password: '123',
+          passwordConfirmation: '123',
+          roles: ['admin']
+        })
+      await request(app)
+        .post('/api/login')
+        .send({
+          email: 'teste@gmail.com',
+          password: '123'
+        })
+        .expect(200)
+    })
+    test('Should return 401 if invalid credentials are provided', async () => {
+      await request(app)
+        .post('/api/login')
+        .send({
+          email: 'teste@gmail.com',
+          password: '123'
+        })
+        .expect(401)
     })
   })
 })
