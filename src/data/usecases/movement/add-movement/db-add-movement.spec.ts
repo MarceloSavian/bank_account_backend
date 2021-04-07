@@ -30,4 +30,10 @@ describe('DbAddMovement', () => {
     await sut.add(mockMovementParams())
     expect(addSpy).toHaveBeenCalledWith(mockMovementParams())
   })
+  test('Should throws if AddMovementsRepository throws', async () => {
+    const { sut, addMovementRepositoryStub } = mockSut()
+    jest.spyOn(addMovementRepositoryStub, 'add').mockRejectedValueOnce(new Error())
+    const promise = sut.add(mockMovementParams())
+    await expect(promise).rejects.toThrow()
+  })
 })

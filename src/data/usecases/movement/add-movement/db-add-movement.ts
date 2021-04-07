@@ -6,7 +6,8 @@ export class DbAddMovement implements AddMovement {
     private readonly addMovementRepository: AddMovementRepository
   ) {}
 
-  async add (movementData: MovementParams): Promise<void> {
+  async add (movementData: MovementParams): Promise<null | Error> {
     await this.addMovementRepository.add(movementData)
+    return null
   }
 }

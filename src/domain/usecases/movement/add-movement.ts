@@ -7,5 +7,5 @@ export type MovementParams = {
 }
 
 export interface AddMovement {
-  add: (movementData: MovementParams) => Promise<void>
+  add: (movementData: MovementParams) => Promise<null | Error>
 }
