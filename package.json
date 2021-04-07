@@ -1,6 +1,6 @@
 {
   "name": "bank_account_backend",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Api built to simulate an bank account management system",
   "main": "dist/main/server.js",
   "scripts": {

@@ -11,7 +11,8 @@
 7. ✅ **Create** an account with data provided, **replacing** for a Criptograph password 
 8. ✅ Generates an session with **accesstoken** for user id
 9. ✅ **Create** user session with generated token and invalidate any opened session
-10. ✅ Returns **200** with access token
+10. ✅ **Create** an account to this user
+11. ✅ Returns **200** with access token
 
 > ## Exceptions
 
