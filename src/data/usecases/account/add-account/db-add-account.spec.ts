@@ -22,4 +22,10 @@ describe('DbAddAccount', () => {
     await sut.add('any_id')
     expect(addSpy).toHaveBeenCalledWith('any_id', 0)
   })
+  test('should throws if AddAccountRepository throws', async () => {
+    const { sut, addAccountRepositoryStub } = mockSut()
+    jest.spyOn(addAccountRepositoryStub, 'add').mockRejectedValueOnce(new Error())
+    const promise = sut.add('any_id')
+    await expect(promise).rejects.toThrow()
+  })
 })
