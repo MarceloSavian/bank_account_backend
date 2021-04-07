@@ -6,6 +6,7 @@ import { mockAddMovement } from '@/presentation/test/mock-add-movement'
 import { mockValidation } from '@/validation/test'
 import { AddMovementController } from './add-movement-controller'
 import MockDate from 'mockdate'
+import { InvalidParamError } from '@/presentation/errors'
 
 type SutTypes = {
   sut: AddMovementController
@@ -69,5 +70,13 @@ describe('AddMovementController', () => {
       value: mockMovementParams().value,
       date: new Date()
     })
+  })
+  test('Should returns 400 if AddMovement returns an error', async () => {
+    const { sut, addMovementStub } = mockSut()
+
+    jest.spyOn(addMovementStub, 'add').mockResolvedValueOnce(new InvalidParamError('any'))
+    const httpRequest = mockRequest()
+    const res = await sut.handle(httpRequest)
+    expect(res).toEqual(badRequest(new InvalidParamError('any')))
   })
 })
