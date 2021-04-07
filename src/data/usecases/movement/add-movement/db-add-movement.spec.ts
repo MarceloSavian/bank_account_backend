@@ -7,6 +7,7 @@ import { GetAccountRepository } from '@/data/protocols/db/account/get-account-re
 import { mockGetAccountRepository } from '@/data/test/mock-db-account'
 import { mockGetMovementTypeRepository } from '@/data/test/mock-movement-type'
 import { GetMovementTypeRepository } from '@/data/protocols/db/movementType/GetMovementTypeRepository'
+import { InvalidParamError } from '@/presentation/errors'
 
 type SutTypes = {
   sut: DbAddMovement
@@ -51,6 +52,12 @@ describe('DbAddMovement', () => {
     const getSpy = jest.spyOn(getAccountRepositoryStub, 'getById')
     await sut.add(mockMovementParams())
     expect(getSpy).toHaveBeenCalledWith(mockMovementParams().accountId)
+  })
+  test('Should returns error if GetAccountRepository returns null', async () => {
+    const { sut, getAccountRepositoryStub } = mockSut()
+    jest.spyOn(getAccountRepositoryStub, 'getById').mockResolvedValueOnce(null)
+    const result = await sut.add(mockMovementParams())
+    expect(result).toEqual(new InvalidParamError('accountId'))
   })
   test('Should throws if GetAccountRepository throws', async () => {
     const { sut, getAccountRepositoryStub } = mockSut()

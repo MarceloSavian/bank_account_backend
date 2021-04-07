@@ -12,7 +12,7 @@ export const mockAddAccountRepository = (): AddAccountRepository => {
 
 export const mockGetAccountRepository = (): GetAccountRepository => {
   class GetAccountRepositoryStub implements GetAccountRepository {
-    async getById (): Promise<AccountModel> {
+    async getById (): Promise<AccountModel | null> {
       return mockAccountModel()
     }
   }

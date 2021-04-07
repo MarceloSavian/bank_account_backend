@@ -4,7 +4,7 @@ import { GetMovementTypeRepository } from '../protocols/db/movementType/GetMovem
 
 export const mockGetMovementTypeRepository = (): GetMovementTypeRepository => {
   class GetMovementTypeRepositoryStub implements GetMovementTypeRepository {
-    async getById (): Promise<MovementTypeModel> {
+    async getById (): Promise<MovementTypeModel | null> {
       return mockMovementTypeIn()
     }
   }

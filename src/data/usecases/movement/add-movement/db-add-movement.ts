@@ -2,6 +2,7 @@ import { GetAccountRepository } from '@/data/protocols/db/account/get-account-re
 import { AddMovementRepository } from '@/data/protocols/db/movement/add-movement-repository'
 import { GetMovementTypeRepository } from '@/data/protocols/db/movementType/GetMovementTypeRepository'
 import { AddMovement, MovementParams } from '@/domain/usecases/movement/add-movement'
+import { InvalidParamError } from '@/presentation/errors'
 
 export class DbAddMovement implements AddMovement {
   constructor (
@@ -11,7 +12,10 @@ export class DbAddMovement implements AddMovement {
   ) {}
 
   async add (movementData: MovementParams): Promise<null | Error> {
-    await this.getAccountRepository.getById(movementData.accountId)
+    const account = await this.getAccountRepository.getById(movementData.accountId)
+
+    if (!account) return new InvalidParamError('accountId')
+
     await this.getMovementTypeRepository.getById(movementData.movementType)
     await this.addMovementRepository.add(movementData)
     return null
