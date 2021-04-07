@@ -5,20 +5,25 @@ import { mockMovementParams } from '@/domain/test/mock-movement'
 import MockDate from 'mockdate'
 import { GetAccountRepository } from '@/data/protocols/db/account/get-account-repository'
 import { mockGetAccountRepository } from '@/data/test/mock-db-account'
+import { mockGetMovementTypeRepository } from '@/data/test/mock-movement-type'
+import { GetMovementTypeRepository } from '@/data/protocols/db/movementType/GetMovementTypeRepository'
 
 type SutTypes = {
   sut: DbAddMovement
   addMovementRepositoryStub: AddMovementRepository
   getAccountRepositoryStub: GetAccountRepository
+  getMovementTypeRepositoryStub: GetMovementTypeRepository
 }
 
 const mockSut = (): SutTypes => {
   const addMovementRepositoryStub = mockAddMovementRepository()
   const getAccountRepositoryStub = mockGetAccountRepository()
+  const getMovementTypeRepositoryStub = mockGetMovementTypeRepository()
   return {
-    sut: new DbAddMovement(addMovementRepositoryStub, getAccountRepositoryStub),
+    sut: new DbAddMovement(addMovementRepositoryStub, getAccountRepositoryStub, getMovementTypeRepositoryStub),
     addMovementRepositoryStub,
-    getAccountRepositoryStub
+    getAccountRepositoryStub,
+    getMovementTypeRepositoryStub
   }
 }
 
@@ -28,6 +33,12 @@ describe('DbAddMovement', () => {
   })
   afterAll(() => {
     MockDate.reset()
+  })
+  test('Should call GetMovementTypesRepository with correct values', async () => {
+    const { sut, getMovementTypeRepositoryStub } = mockSut()
+    const getSpy = jest.spyOn(getMovementTypeRepositoryStub, 'getById')
+    await sut.add(mockMovementParams())
+    expect(getSpy).toHaveBeenCalledWith(mockMovementParams().movementType)
   })
   test('Should call GetAccountRepository with correct values', async () => {
     const { sut, getAccountRepositoryStub } = mockSut()
