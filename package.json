@@ -2,10 +2,11 @@
   "name": "bank_account_backend",
   "version": "0.1.0",
   "description": "Api built to simulate an bank account management system",
-  "main": "index.js",
+  "main": "dist/main/server.js",
   "scripts": {
     "start": "node dist/main/server.js",
     "build": "rimraf dist && tsc -p tsconfig-build.json",
+    "debug": "nodemon -L --watch ./dist --inspect=0.0.0.0:9222 --nolazy ./dist/main/server.js",
     "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
     "test:verbose": "jest --passWithNoTests --runInBand",
     "test:unit": "npm test -- --watch -c jest-unit-config.js",
@@ -59,6 +60,7 @@
     "jsonwebtoken": "^8.5.1",
     "module-alias": "^2.2.2",
     "mongodb": "^3.6.5",
+    "nodemon": "^2.0.7",
     "swagger-ui-express": "^4.1.6",
     "validator": "^13.5.2"
   },

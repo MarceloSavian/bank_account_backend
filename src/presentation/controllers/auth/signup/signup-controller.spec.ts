@@ -4,7 +4,7 @@ import { mockUserModel, mockUserParams } from '@/domain/test'
 import { AddUser } from '@/domain/usecases/user/add-user'
 import { mockAddUser } from '@/presentation/test/mock-add-user'
 import { mockValidation } from '@/presentation/test/mock-validation'
-import { badRequest, forbidden, ok, serverError } from '@/presentation/helpers/http/http-helper'
+import { badRequest, forbidden, ok, serverError, unauthorized } from '@/presentation/helpers/http/http-helper'
 import { ServerError } from '@/presentation/errors'
 import { mockAuthentication } from '@/presentation/test/mock-authentication'
 import { Authentication } from '@/domain/usecases/user/authentication'
@@ -72,6 +72,16 @@ describe('SignUp Controller', () => {
 
     await sut.handle(httpRequest)
     expect(addSpy).toHaveBeenCalledWith(mockUserParams())
+  })
+  test('Should returns unathorized if AddUser receives undefined user', async () => {
+    const { sut, addUserStub } = mockSut()
+
+    jest.spyOn(addUserStub, 'add').mockResolvedValueOnce({})
+
+    const httpRequest = mockRequest()
+
+    const res = await sut.handle(httpRequest)
+    expect(res).toEqual(unauthorized())
   })
   test('Should return 500 if AddUser throws', async () => {
     const { sut, addUserStub } = mockSut()
