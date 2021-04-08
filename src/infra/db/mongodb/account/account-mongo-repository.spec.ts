@@ -3,6 +3,7 @@ import MockDate from 'mockdate'
 import { mongoHelper } from '../helpers/mongo-helper'
 import { AccountMongoRepository } from './account-mongo-repository'
 import { mockAccountModel } from '@/domain/test/mock-account'
+import { mockUserModel } from '@/domain/test'
 
 type SutTypes = {
   sut: AccountMongoRepository
@@ -16,6 +17,7 @@ const mockSut = (): SutTypes => {
 
 describe('AccountMongoRepository', () => {
   let accountCollection: Collection
+  let userCollection: Collection
   beforeAll(() => {
     MockDate.set(new Date())
   })
@@ -31,6 +33,8 @@ describe('AccountMongoRepository', () => {
   beforeEach(async () => {
     accountCollection = await mongoHelper.getCollection('accounts')
     await accountCollection.deleteMany({})
+    userCollection = await mongoHelper.getCollection('users')
+    await userCollection.deleteMany({})
   })
   describe('add()', () => {
     test('Should add an account on database', async () => {
@@ -61,6 +65,26 @@ describe('AccountMongoRepository', () => {
       expect(account?.createdAt).toEqual(mockAccountModel().createdAt)
       expect(account?.updatedAt).toEqual(mockAccountModel().updatedAt)
       expect(account?.userId).toEqual(mockAccountModel().userId)
+    })
+  })
+  describe('getByUserId()', () => {
+    test('Should returns an account ', async () => {
+      const { sut } = mockSut()
+      const result = await userCollection.insertOne(mockUserModel())
+      const id = mongoHelper.map(result.ops[0]).id
+      await accountCollection.insertOne({
+        balance: mockAccountModel().balance,
+        createdAt: mockAccountModel().createdAt,
+        updatedAt: mockAccountModel().updatedAt,
+        userId: id
+      })
+      const account = await sut.getByUserId(id)
+      expect(account).toBeTruthy()
+      expect(account?.id).toBeTruthy()
+      expect(account?.balance).toBe(mockAccountModel().balance)
+      expect(account?.createdAt).toEqual(mockAccountModel().createdAt)
+      expect(account?.updatedAt).toEqual(mockAccountModel().updatedAt)
+      expect(account?.userId).toEqual(id)
     })
   })
   describe('update()', () => {

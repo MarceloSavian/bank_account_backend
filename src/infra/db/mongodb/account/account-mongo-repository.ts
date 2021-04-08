@@ -1,11 +1,13 @@
 import { AddAccountRepository } from '@/data/protocols/db/account/add-account-repository'
+import { GetAccountByUserIdRepository } from '@/data/protocols/db/account/get-account-by-user-id-repository'
 import { GetAccountRepository } from '@/data/protocols/db/account/get-account-repository'
 import { UpdateAccountRepository } from '@/data/protocols/db/account/update-account-repository'
 import { AccountModel } from '@/domain/models/account'
 import { ObjectId } from 'bson'
 import { mongoHelper } from '../helpers/mongo-helper'
 
-export class AccountMongoRepository implements AddAccountRepository, GetAccountRepository, UpdateAccountRepository {
+export class AccountMongoRepository implements AddAccountRepository,
+  GetAccountRepository, UpdateAccountRepository, GetAccountByUserIdRepository {
   async add (userId: string, balance: number): Promise<void> {
     const accountCollection = await mongoHelper.getCollection('accounts')
 
@@ -32,5 +34,11 @@ export class AccountMongoRepository implements AddAccountRepository, GetAccountR
         $set: { balance, updatedAt }
       }
     )
+  }
+
+  async getByUserId (userId: string): Promise<AccountModel | null> {
+    const accountCollection = await mongoHelper.getCollection('accounts')
+    const account = await accountCollection.findOne({ userId: new ObjectId(userId) })
+    return account && mongoHelper.map(account)
   }
 }
