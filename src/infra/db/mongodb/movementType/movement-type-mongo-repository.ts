@@ -1,4 +1,4 @@
-import { GetMovementTypeRepository } from '@/data/protocols/db/movementType/GetMovementTypeRepository'
+import { GetMovementTypeRepository } from '@/data/protocols/db/movementType/get-movement-type-repository'
 import { MovementTypeModel } from '@/domain/models/movementType'
 import { ObjectId } from 'bson'
 import { mongoHelper } from '../helpers/mongo-helper'
