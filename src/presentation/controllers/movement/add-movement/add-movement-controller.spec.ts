@@ -66,6 +66,13 @@ describe('AddMovementController', () => {
     await sut.handle(httpRequest)
     expect(getSpy).toHaveBeenCalledWith(mockRequest().userId)
   })
+  test('Should returns 500 if GetAccountByUserIdStub throws', async () => {
+    const { sut, getAccountByUserIdStub } = mockSut()
+    jest.spyOn(getAccountByUserIdStub, 'get').mockRejectedValueOnce(new Error())
+    const httpRequest = mockRequest()
+    const res = await sut.handle(httpRequest)
+    expect(res).toEqual(serverError(new Error()))
+  })
   test('Should return 400 if validation returns an error', async () => {
     const { sut, validationStub } = mockSut()
 
