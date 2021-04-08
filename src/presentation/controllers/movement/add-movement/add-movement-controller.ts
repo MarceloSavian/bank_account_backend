@@ -1,11 +1,14 @@
+import { GetAccountByUserId } from '@/domain/usecases/account/get-account-by-user-id'
 import { AddMovement } from '@/domain/usecases/movement/add-movement'
+import { InvalidParamError } from '@/presentation/errors'
 import { badRequest, ok, serverError } from '@/presentation/helpers/http/http-helper'
 import { Controller, HttpRequest, HttpResponse, Validation } from '@/presentation/protocols'
 
 export class AddMovementController implements Controller {
   constructor (
     private readonly validation: Validation,
-    private readonly addMovement: AddMovement
+    private readonly addMovement: AddMovement,
+    private readonly getAccountByUserId: GetAccountByUserId
   ) { }
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -14,10 +17,15 @@ export class AddMovementController implements Controller {
 
       if (error) return badRequest(error)
 
-      const { accountId, movementType, value } = httpRequest.body
+      const { movementType, value } = httpRequest.body
+      const { userId } = httpRequest
+
+      const account = await this.getAccountByUserId.get(String(userId))
+
+      if (!account) return badRequest(new InvalidParamError('userId'))
 
       const add = await this.addMovement.add({
-        accountId,
+        accountId: account.id,
         movementType,
         value,
         date: new Date()
