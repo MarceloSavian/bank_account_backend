@@ -2,6 +2,7 @@ import { AccountModel } from '@/domain/models/account'
 import { mockAccountModel } from '@/domain/test/mock-account'
 import { AddAccountRepository } from '../protocols/db/account/add-account-repository'
 import { GetAccountRepository } from '../protocols/db/account/get-account-repository'
+import { UpdateAccountRepository } from '../protocols/db/account/update-account-repository'
 
 export const mockAddAccountRepository = (): AddAccountRepository => {
   class AddAccountRepositoryStub implements AddAccountRepository {
@@ -17,4 +18,11 @@ export const mockGetAccountRepository = (): GetAccountRepository => {
     }
   }
   return new GetAccountRepositoryStub()
+}
+
+export const mockUpdateAccountRepository = (): UpdateAccountRepository => {
+  class UpdateAccountRepositoryStub implements UpdateAccountRepository {
+    async update (): Promise<void> {}
+  }
+  return new UpdateAccountRepositoryStub()
 }
