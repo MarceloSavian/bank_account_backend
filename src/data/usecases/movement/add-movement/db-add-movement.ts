@@ -1,4 +1,5 @@
 import { GetAccountRepository } from '@/data/protocols/db/account/get-account-repository'
+import { UpdateAccountRepository } from '@/data/protocols/db/account/update-account-repository'
 import { AddMovementRepository } from '@/data/protocols/db/movement/add-movement-repository'
 import { GetMovementTypeRepository } from '@/data/protocols/db/movementType/GetMovementTypeRepository'
 import { AddMovement, MovementParams } from '@/domain/usecases/movement/add-movement'
@@ -8,7 +9,8 @@ export class DbAddMovement implements AddMovement {
   constructor (
     private readonly addMovementRepository: AddMovementRepository,
     private readonly getAccountRepository: GetAccountRepository,
-    private readonly getMovementTypeRepository: GetMovementTypeRepository
+    private readonly getMovementTypeRepository: GetMovementTypeRepository,
+    private readonly updateAccountRepository: UpdateAccountRepository
   ) {}
 
   async add (movementData: MovementParams): Promise<null | Error> {
@@ -22,6 +24,11 @@ export class DbAddMovement implements AddMovement {
 
     if (movementType.type === 'out' && movementData.value > account.balance) return new InvalidParamError('value')
 
+    let accountBalance = movementData.value + account.balance
+
+    if (movementType.type === 'out') accountBalance = account.balance - movementData.value
+
+    await this.updateAccountRepository.update(movementData.accountId, accountBalance)
     await this.addMovementRepository.add(movementData)
     return null
   }

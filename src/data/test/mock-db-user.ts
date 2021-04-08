@@ -1,6 +1,6 @@
 import { UserModel } from '@/domain/models/user'
 import { mockUserModel } from '@/domain/test'
-import { LoadUserByIdRepository } from '../protocols/db/account/load-user-by-id-repository'
+import { LoadUserByIdRepository } from '../protocols/db/user/load-user-by-id-repository'
 import { AddUserRepository } from '../protocols/db/user/add-user-repository'
 import { LoadUserByEmailRepository } from '../protocols/db/user/load-user-by-email-repository'
 

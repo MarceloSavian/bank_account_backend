@@ -8,5 +8,5 @@ export const makeDbAddMovement = (): AddMovement => {
   const movementMongoRepository = new MovementMongoRepository()
   const accountMongoRepository = new AccountMongoRepository()
   const movementTypeMongoRepository = new MovementTypeMongoRepository()
-  return new DbAddMovement(movementMongoRepository, accountMongoRepository, movementTypeMongoRepository)
+  return new DbAddMovement(movementMongoRepository, accountMongoRepository, movementTypeMongoRepository, accountMongoRepository)
 }

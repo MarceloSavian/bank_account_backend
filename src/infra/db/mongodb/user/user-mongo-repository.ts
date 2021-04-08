@@ -1,4 +1,4 @@
-import { LoadUserByIdRepository } from '@/data/protocols/db/account/load-user-by-id-repository'
+import { LoadUserByIdRepository } from '@/data/protocols/db/user/load-user-by-id-repository'
 import { AddUserRepository } from '@/data/protocols/db/user/add-user-repository'
 import { LoadUserByEmailRepository } from '@/data/protocols/db/user/load-user-by-email-repository'
 import { UserModel } from '@/domain/models/user'

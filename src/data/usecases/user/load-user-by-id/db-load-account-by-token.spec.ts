@@ -1,4 +1,4 @@
-import { LoadUserByIdRepository } from '@/data/protocols/db/account/load-user-by-id-repository'
+import { LoadUserByIdRepository } from '@/data/protocols/db/user/load-user-by-id-repository'
 import { mockLoadUserByIdRepository } from '@/data/test'
 import { DbLoadUserById } from './db-load-account-by-token'
 
