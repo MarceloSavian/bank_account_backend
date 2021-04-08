@@ -109,4 +109,18 @@ describe('DbAddMovement', () => {
       mockAccountModel().balance + mockMovementParams().value
     )
   })
+  test('Should lower balance value if movementType is out', async () => {
+    const { sut, updateAccountRepositoryStub, getMovementTypeRepositoryStub, getAccountRepositoryStub } = mockSut()
+    jest.spyOn(getMovementTypeRepositoryStub, 'getById').mockResolvedValueOnce(mockMovementTypeOut())
+    jest.spyOn(getAccountRepositoryStub, 'getById').mockResolvedValueOnce({
+      ...mockAccountModel(),
+      balance: 30
+    })
+    const updateSpy = jest.spyOn(updateAccountRepositoryStub, 'update')
+    await sut.add(mockMovementParams())
+    expect(updateSpy).toHaveBeenCalledWith(
+      mockMovementParams().accountId,
+      30 - mockMovementParams().value
+    )
+  })
 })
