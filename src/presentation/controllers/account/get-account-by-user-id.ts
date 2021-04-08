@@ -16,7 +16,7 @@ export class GetAccountByUserIdController implements Controller {
 
       if (!account) return badRequest(new InvalidParamError('userId'))
 
-      return ok({ account })
+      return ok(account)
     } catch (error) {
       return serverError(error)
     }
