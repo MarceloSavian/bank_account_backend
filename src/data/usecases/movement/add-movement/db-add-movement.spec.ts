@@ -109,6 +109,12 @@ describe('DbAddMovement', () => {
       mockAccountModel().balance + mockMovementParams().value
     )
   })
+  test('Should throws if UpdateAccountRepository throws', async () => {
+    const { sut, updateAccountRepositoryStub } = mockSut()
+    jest.spyOn(updateAccountRepositoryStub, 'update').mockRejectedValueOnce(new Error())
+    const promise = sut.add(mockMovementParams())
+    await expect(promise).rejects.toThrow()
+  })
   test('Should lower balance value if movementType is out', async () => {
     const { sut, updateAccountRepositoryStub, getMovementTypeRepositoryStub, getAccountRepositoryStub } = mockSut()
     jest.spyOn(getMovementTypeRepositoryStub, 'getById').mockResolvedValueOnce(mockMovementTypeOut())
