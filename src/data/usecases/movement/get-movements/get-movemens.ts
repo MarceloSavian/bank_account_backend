@@ -7,7 +7,7 @@ export class DbGetMovements implements GetMovements {
     private readonly getMovementsRepository: GetMovementsRepository
   ) {}
 
-  async get (): Promise<MovementModel[] | null> {
-    return await this.getMovementsRepository.getAll(20)
+  async get (accountId: string): Promise<MovementModel[] | null> {
+    return await this.getMovementsRepository.getAll(accountId, 20)
   }
 }

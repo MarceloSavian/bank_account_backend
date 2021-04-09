@@ -29,12 +29,12 @@ describe('DbGetMovements', () => {
   test('should calls GetMovementsRepository', async () => {
     const { sut, getMovementsRepositoryStub } = mockSut()
     const getSpy = jest.spyOn(getMovementsRepositoryStub, 'getAll')
-    await sut.get()
-    expect(getSpy).toHaveBeenCalled()
+    await sut.get('any_id')
+    expect(getSpy).toHaveBeenCalledWith('any_id', 20)
   })
   test('should returns movements on succes', async () => {
     const { sut } = mockSut()
-    const account = await sut.get()
+    const account = await sut.get('any_id')
     expect(account).toEqual([mockMovementModel()])
   })
 })

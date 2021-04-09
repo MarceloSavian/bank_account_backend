@@ -1,5 +1,5 @@
 import { MovementModel } from '@/domain/models/movement'
 
 export interface GetMovements {
-  get: () => Promise<MovementModel[] | null>
+  get: (accountId: string) => Promise<MovementModel[] | null>
 }

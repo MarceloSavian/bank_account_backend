@@ -4,6 +4,7 @@ import { mongoHelper } from '../helpers/mongo-helper'
 import { mockMovementParams } from '@/domain/test/mock-movement'
 import { MovementMongoRepository } from './movement-mongo-repository'
 import { mockMovementTypeIn } from '@/domain/test/mock-movement-type'
+import { mockAccountModel } from '@/domain/test/mock-account'
 
 type SutTypes = {
   sut: MovementMongoRepository
@@ -18,6 +19,7 @@ const mockSut = (): SutTypes => {
 describe('MovementMongoRepository', () => {
   let movementCollection: Collection
   let movementTypesCollection: Collection
+  let accountCollection: Collection
   beforeAll(() => {
     MockDate.set(new Date())
   })
@@ -35,6 +37,8 @@ describe('MovementMongoRepository', () => {
     await movementCollection.deleteMany({})
     movementTypesCollection = await mongoHelper.getCollection('movementTypes')
     await movementTypesCollection.deleteMany({})
+    accountCollection = await mongoHelper.getCollection('accounts')
+    await accountCollection.deleteMany({})
   })
   describe('add()', () => {
     test('Should add an movement on database', async () => {
@@ -52,15 +56,22 @@ describe('MovementMongoRepository', () => {
   describe('getAll()', () => {
     test('Should get an movement on database', async () => {
       const { sut } = mockSut()
-      const result = await movementTypesCollection.insertOne(mockMovementTypeIn())
-      const id = mongoHelper.map(result.ops[0]).id
+      const result = await accountCollection.insertOne({
+        balance: mockAccountModel().balance,
+        createdAt: mockAccountModel().createdAt,
+        updatedAt: mockAccountModel().updatedAt,
+        userId: mockAccountModel().userId
+      })
+      const acountid = mongoHelper.map(result.ops[0]).id
+      const resultType = await movementTypesCollection.insertOne(mockMovementTypeIn())
+      const id = mongoHelper.map(resultType.ops[0]).id
       await movementCollection.insertMany([{
-        accountId: 'any_id',
+        accountId: acountid,
         movementType: String(id),
         value: 20,
         date: new Date()
       }])
-      const movements = await sut.getAll(20)
+      const movements = await sut.getAll(acountid, 20)
       console.log(movements)
       expect(movements?.[0]).toBeTruthy()
       expect(movements?.[0]?.id).toBeTruthy()

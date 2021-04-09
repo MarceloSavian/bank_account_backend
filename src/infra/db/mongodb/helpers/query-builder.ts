@@ -1,6 +1,13 @@
 export class QueryBuilder {
   private readonly query: object[] = []
 
+  match (data: object): QueryBuilder {
+    this.query.push({
+      $match: data
+    })
+    return this
+  }
+
   unwind (data: object): QueryBuilder {
     this.query.push({
       $unwind: data
