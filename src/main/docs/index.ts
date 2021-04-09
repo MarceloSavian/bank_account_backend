@@ -1,5 +1,5 @@
 import { badRequest, serverError, unauthorized, forbidden } from './components/'
-import { loginPath, signUpPath, movementPath, movementTypePath } from './paths/'
+import { loginPath, signUpPath, movementPath, movementTypePath, accountPath } from './paths/'
 import {
   userSchema,
   loginSchema,
@@ -7,7 +7,8 @@ import {
   apiKeyAuthSchema,
   signUpParamsSchema,
   movementParamsSchema,
-  movementTypeSchema
+  movementTypeSchema,
+  accountSchema
 } from './schemas/'
 
 export default {
@@ -30,12 +31,15 @@ export default {
     name: 'Movement'
   }, {
     name: 'MovementTypes'
+  }, {
+    name: 'Account'
   }],
   paths: {
     '/login': loginPath,
     '/signup': signUpPath,
     '/movement': movementPath,
-    '/movementTypes': movementTypePath
+    '/movementTypes': movementTypePath,
+    '/account': accountPath
   },
   schemas: {
     user: userSchema,
@@ -43,7 +47,8 @@ export default {
     error: errorSchema,
     signUpParams: signUpParamsSchema,
     movementParams: movementParamsSchema,
-    movementType: movementTypeSchema
+    movementType: movementTypeSchema,
+    account: accountSchema
   },
   components: {
     securitySchemes: {
