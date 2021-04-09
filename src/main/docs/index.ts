@@ -1,11 +1,12 @@
 import { badRequest, serverError, unauthorized, forbidden } from './components/'
-import { loginPath, signUpPath } from './paths/'
+import { loginPath, signUpPath, movementPath } from './paths/'
 import {
   userSchema,
   loginSchema,
   errorSchema,
   apiKeyAuthSchema,
-  signUpParamsSchema
+  signUpParamsSchema,
+  movementParamsSchema
 } from './schemas/'
 
 export default {
@@ -24,16 +25,20 @@ export default {
   }],
   tags: [{
     name: 'Login'
+  }, {
+    name: 'Movement'
   }],
   paths: {
     '/login': loginPath,
-    '/signup': signUpPath
+    '/signup': signUpPath,
+    '/movement': movementPath
   },
   schemas: {
     user: userSchema,
     'login-params': loginSchema,
     error: errorSchema,
-    signUpParams: signUpParamsSchema
+    signUpParams: signUpParamsSchema,
+    movementParams: movementParamsSchema
   },
   components: {
     securitySchemes: {
