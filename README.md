@@ -9,6 +9,7 @@ Api built to simulate an bank account management system
 
 > ## Instalation and config
 1. [Instalation](./requirements/instalation/index.md)
+2. [Migrations](./requirements/instalation/migrations.md)
 2. [Docker Compose](./requirements/instalation/docker.md)
 
 > ## Database Design
