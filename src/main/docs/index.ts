@@ -1,10 +1,18 @@
 import { badRequest, serverError, unauthorized, forbidden } from './components/'
+import { loginPath, signUpPath } from './paths/'
+import {
+  userSchema,
+  loginSchema,
+  errorSchema,
+  apiKeyAuthSchema,
+  signUpParamsSchema
+} from './schemas/'
 
 export default {
   openapi: '3.0.0',
   info: {
-    title: 'Clean Node Api',
-    description: 'API from Mango curse to realize surveys',
+    title: 'Bank account API',
+    description: 'API for simulate a bank account api',
     version: '1.0.0'
   },
   license: {
@@ -14,10 +22,23 @@ export default {
   servers: [{
     url: '/api'
   }],
-  tags: [],
-  paths: {},
-  schemas: {},
+  tags: [{
+    name: 'Login'
+  }],
+  paths: {
+    '/login': loginPath,
+    '/signup': signUpPath
+  },
+  schemas: {
+    user: userSchema,
+    'login-params': loginSchema,
+    error: errorSchema,
+    signUpParams: signUpParamsSchema
+  },
   components: {
+    securitySchemes: {
+      apiKeyAuth: apiKeyAuthSchema
+    },
     badRequest,
     serverError,
     unauthorized,
