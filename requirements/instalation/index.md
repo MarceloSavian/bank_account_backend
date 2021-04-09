@@ -33,3 +33,9 @@ Build project for tests and production, make sure you have all configs set
 For run the project you can run the following command
 
 > npm run start
+
+## Debug
+
+You can debug the project with command
+
+> npm run debug

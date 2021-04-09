@@ -20,3 +20,8 @@ Api built to simulate an bank account management system
 3. [Add Movement](./requirements/movement/addMovement.md)
 4. [Get Account](./requirements/account/getAccount.md)
 5. [Get Movement Types](./requirements/movementTypes/getMovementTypes.md)
+
+> ## Docs
+After all configs ready, you can see the api docs for all requests in URL:
+
+> http://localhost:5050/api-docs/
