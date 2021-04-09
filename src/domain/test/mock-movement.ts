@@ -13,5 +13,9 @@ export const mockMovementModel = (): MovementModel => ({
   value: 20,
   date: new Date(),
   accountId: 'any_id',
-  movementType: 'any_id'
+  movementType: {
+    id: 'any_id',
+    name: 'any_name',
+    type: 'in'
+  }
 })
