@@ -8,6 +8,6 @@ export class DbGetMovements implements GetMovements {
   ) {}
 
   async get (): Promise<MovementModel[] | null> {
-    return await this.getMovementsRepository.getAll()
+    return await this.getMovementsRepository.getAll(20)
   }
 }
