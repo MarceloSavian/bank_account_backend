@@ -16,10 +16,7 @@ export const movementPath = {
     },
     responses: {
       200: {
-        description: 'Success',
-        content: {
-          'application/json': {}
-        }
+        description: 'Success'
       },
       400: {
         $ref: '#/components/badRequest'
