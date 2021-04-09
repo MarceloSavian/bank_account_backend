@@ -9,7 +9,7 @@ describe('AddMovement validation', () => {
     makeAddMovementValidation()
     const validations: Validation[] = []
 
-    for (const field of ['accountId', 'movementType', 'value']) {
+    for (const field of ['movementType', 'value']) {
       validations.push(new RequiredFieldValidation(field))
     }
 
