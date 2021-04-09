@@ -1,7 +1,7 @@
 import { GetAccountRepository } from '@/data/protocols/db/account/get-account-repository'
 import { UpdateAccountRepository } from '@/data/protocols/db/account/update-account-repository'
 import { AddMovementRepository } from '@/data/protocols/db/movement/add-movement-repository'
-import { GetMovementTypeRepository } from '@/data/protocols/db/movementType/GetMovementTypeRepository'
+import { GetMovementTypeRepository } from '@/data/protocols/db/movementType/get-movement-type-repository'
 import { AddMovement, MovementParams } from '@/domain/usecases/movement/add-movement'
 import { InvalidParamError } from '@/presentation/errors'
 

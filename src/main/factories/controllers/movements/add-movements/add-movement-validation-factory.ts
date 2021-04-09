@@ -4,7 +4,7 @@ import { Validation } from '@/presentation/protocols/validation'
 export const makeAddMovementValidation = (): ValidationComposite => {
   const validations: Validation[] = []
 
-  for (const field of ['accountId', 'movementType', 'value']) {
+  for (const field of ['movementType', 'value']) {
     validations.push(new RequiredFieldValidation(field))
   }
 

@@ -46,4 +46,18 @@ describe('MovementTypeMongoRepository', () => {
       expect(movementType?.type).toEqual('in')
     })
   })
+  describe('getAll()', () => {
+    test('Should return all movementType', async () => {
+      const { sut } = mockSut()
+      await movementTypeCollection.insertOne({
+        name: 'any_name',
+        type: 'in'
+      })
+      const movementType = await sut.getAll()
+      expect(movementType?.[0]).toBeTruthy()
+      expect(movementType?.[0]?.id).toBeTruthy()
+      expect(movementType?.[0]?.name).toBe('any_name')
+      expect(movementType?.[0]?.type).toEqual('in')
+    })
+  })
 })
