@@ -12,4 +12,5 @@ Api built to simulate an bank account management system
 
 > ## APIs
 1. [Sign up](./requirements/auth/signup.md)
-1. [Login](./requirements/auth/login.md)
+2. [Login](./requirements/auth/login.md)
+3. [Add Movement](./requirements/movement/addMovement.md)
