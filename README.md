@@ -14,3 +14,5 @@ Api built to simulate an bank account management system
 1. [Sign up](./requirements/auth/signup.md)
 2. [Login](./requirements/auth/login.md)
 3. [Add Movement](./requirements/movement/addMovement.md)
+4. [Get Account](./requirements/account/getAccount.md)
+5. [Get Movement Types](./requirements/movementTypes/getMovementTypes.md)
