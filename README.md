@@ -25,3 +25,8 @@ Api built to simulate an bank account management system
 After all configs ready, you can see the api docs for all requests in URL:
 
 > http://localhost:5050/api-docs/
+
+> ## Tests
+Here you can see all commands for test:
+
+[Tests](./requirements/tests/tests.md)
