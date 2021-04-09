@@ -14,6 +14,8 @@ For database config you have to go to the following file
 
 There you can config your mongoUrl, to your localhost or any other url to your MongoDB database
 
+You also have to run migrations, you can se how [here](./migrations)
+
 ## Port Config
 
 You can change the port the project will run in
