@@ -7,6 +7,9 @@ Api built to simulate an bank account management system
 
 #
 
+> ## Instalation and config
+1. [Instalation](./requirements/instalation/index.md)
+
 > ## Database Design
 1. [Database](./requirements/database/database.md)
 
