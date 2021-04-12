@@ -2,7 +2,7 @@
 
 const config = {
   mongodb: {
-    url: "mongodb://localhost:27017",
+    url: "mongodb://18.188.76.69:27017",
     databaseName: "bank-account",
     options: {
       useNewUrlParser: true,

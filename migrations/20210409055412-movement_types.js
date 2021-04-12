@@ -5,7 +5,7 @@ module.exports = {
     return db.collection('movementTypes').insertMany([
       {
         "_id": new ObjectID("606f3ef89c9eb364811f317a"),
-        "name": "Receive Deposit",
+        "name": "Insert Deposit",
         "type": "in"
       },
       {
@@ -15,7 +15,7 @@ module.exports = {
       },
       {
         "_id": new ObjectID("606fa2629c9eb364811f317c"),
-        "name": "Payment",
+        "name": "Make Payment",
         "type": "out"
       }
     ])
