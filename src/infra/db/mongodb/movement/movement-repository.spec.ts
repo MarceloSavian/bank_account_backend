@@ -73,13 +73,15 @@ describe('MovementMongoRepository', () => {
         accountId: acountid,
         movementType: String(id),
         value: 20,
-        date: new Date()
+        date: new Date(),
+        balance: 20
       }])
       const movements = await sut.getAll(acountid, 20)
       expect(movements?.[0]).toBeTruthy()
       expect(movements?.[0]?.id).toBeTruthy()
       expect(movements?.[0]?.value).toBe(20)
       expect(movements?.[0]?.date).toEqual(new Date())
+      expect(movements?.[0]?.balance).toBe(20)
       expect(movements?.[0]?.movementType).toBeTruthy()
       expect(movements?.[0]?.movementType.id).toBeTruthy()
       expect(movements?.[0]?.movementType.type).toBe(mockMovementTypeIn().type)

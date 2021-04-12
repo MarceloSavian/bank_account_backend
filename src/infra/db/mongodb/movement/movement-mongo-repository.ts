@@ -25,7 +25,8 @@ export class MovementMongoRepository implements AddMovementRepository, GetMoveme
           $toObjectId: '$movementType'
         },
         value: 1,
-        date: 1
+        date: 1,
+        balance: 1
       })
       .lookup({
         from: 'movementTypes',
@@ -46,7 +47,8 @@ export class MovementMongoRepository implements AddMovementRepository, GetMoveme
           type: '$movementType.type'
         },
         value: 1,
-        date: 1
+        date: 1,
+        balance: 1
       })
     const result = await collection.aggregate(query.build()).toArray()
     return mongoHelper.mapCollection(result)

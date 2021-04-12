@@ -6,4 +6,5 @@ export type MovementModel = {
   date: Date
   accountId: string
   movementType: MovementTypeModel
+  balance: number
 }
