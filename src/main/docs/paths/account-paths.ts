@@ -1,7 +1,7 @@
 export const accountPath = {
   get: {
     tags: ['Account'],
-    summary: 'Account Routes',
+    summary: 'Get user account',
     security: [{
       apiKeyAuth: []
     }],

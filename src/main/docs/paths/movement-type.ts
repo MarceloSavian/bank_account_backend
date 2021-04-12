@@ -1,7 +1,7 @@
 export const movementTypePath = {
   get: {
     tags: ['MovementTypes'],
-    summary: 'Movements Type Routes',
+    summary: 'Get all movement types',
     security: [{
       apiKeyAuth: []
     }],
