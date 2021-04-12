@@ -63,7 +63,10 @@ describe('MovementMongoRepository', () => {
         userId: mockAccountModel().userId
       })
       const acountid = mongoHelper.map(result.ops[0]).id
-      const resultType = await movementTypesCollection.insertOne(mockMovementTypeIn())
+      const resultType = await movementTypesCollection.insertOne({
+        name: mockMovementTypeIn().name,
+        type: mockMovementTypeIn().type
+      })
       const id = mongoHelper.map(resultType.ops[0]).id
       await movementCollection.insertMany([{
         accountId: acountid,
@@ -72,11 +75,14 @@ describe('MovementMongoRepository', () => {
         date: new Date()
       }])
       const movements = await sut.getAll(acountid, 20)
-      console.log(movements)
       expect(movements?.[0]).toBeTruthy()
       expect(movements?.[0]?.id).toBeTruthy()
       expect(movements?.[0]?.value).toBe(20)
       expect(movements?.[0]?.date).toEqual(new Date())
+      expect(movements?.[0]?.movementType).toBeTruthy()
+      expect(movements?.[0]?.movementType.id).toBeTruthy()
+      expect(movements?.[0]?.movementType.type).toBe(mockMovementTypeIn().type)
+      expect(movements?.[0]?.movementType.name).toBe(mockMovementTypeIn().name)
     })
   })
 })

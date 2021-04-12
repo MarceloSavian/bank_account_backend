@@ -35,6 +35,20 @@ export class MovementMongoRepository implements AddMovementRepository, GetMoveme
         as: 'movementType'
       })
       .unwind({ path: '$movementType' })
+      .project({
+        _id: {
+          $toString: '$_id'
+        },
+        movementType: {
+          id: {
+            $toString: '$movementType._id'
+          },
+          name: '$movementType.name',
+          type: '$movementType.type'
+        },
+        value: 1,
+        date: 1
+      })
     const result = await collection.aggregate(query.build()).toArray()
     return mongoHelper.mapCollection(result)
   }
