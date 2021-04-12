@@ -7,6 +7,12 @@ Api built to simulate an bank account management system
 
 #
 
+> ## Use now
+Access the link below to use and see the API documentation
+1. [Docs](http://18.188.76.69:5050/api-docs)
+
+#
+
 > ## Instalation and config
 1. [Instalation](./requirements/instalation/index.md)
 2. [Migrations](./requirements/instalation/migrations.md)
@@ -18,9 +24,10 @@ Api built to simulate an bank account management system
 > ## APIs
 1. [Sign up](./requirements/auth/signup.md)
 2. [Login](./requirements/auth/login.md)
-3. [Add Movement](./requirements/movement/addMovement.md)
+3. [Add Movement](./requirements/movements/addMovement.md)
 4. [Get Account](./requirements/account/getAccount.md)
 5. [Get Movement Types](./requirements/movementTypes/getMovementTypes.md)
+5. [Get Movements](./requirements/movements/getMovements.md)
 
 > ## Docs
 After all configs ready, you can see the api docs for all requests in URL:

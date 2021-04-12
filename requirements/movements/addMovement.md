@@ -2,7 +2,7 @@
 
 > ## Success
 
-1. ✅ Receives an **POST** requisition on **/api/movement** route
+1. ✅ Receives an **POST** requisition on **/api/movements** route
 2. ✅ Validates **x-access-token**
 3. ✅ Validates **accountId** and **movementType** and **value**
 4. ✅ **Gets** user account
