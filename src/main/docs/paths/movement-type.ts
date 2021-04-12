@@ -1,7 +1,7 @@
 export const movementTypePath = {
   get: {
     tags: ['MovementTypes'],
-    summary: 'Movements Type Routes',
+    summary: 'Get all movement types',
     security: [{
       apiKeyAuth: []
     }],
@@ -10,7 +10,9 @@ export const movementTypePath = {
         description: 'Success',
         content: {
           'application/json': {
-            $ref: '#/schemas/movementType'
+            schema: {
+              $ref: '#/schemas/movementTypes'
+            }
           }
         }
       },

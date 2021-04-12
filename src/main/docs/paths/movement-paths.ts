@@ -1,7 +1,7 @@
 export const movementPath = {
   post: {
-    tags: ['Movement'],
-    summary: 'Movements Routes',
+    tags: ['Movements'],
+    summary: 'Post a movement in account',
     security: [{
       apiKeyAuth: []
     }],
@@ -17,6 +17,34 @@ export const movementPath = {
     responses: {
       200: {
         description: 'Success'
+      },
+      400: {
+        $ref: '#/components/badRequest'
+      },
+      401: {
+        $ref: '#/components/serverError'
+      },
+      500: {
+        $ref: '#/components/unauthorized'
+      }
+    }
+  },
+  get: {
+    tags: ['Movements'],
+    summary: 'Get last 20 movements in account',
+    security: [{
+      apiKeyAuth: []
+    }],
+    responses: {
+      200: {
+        description: 'Success',
+        content: {
+          'application/json': {
+            schema: {
+              $ref: '#/schemas/movementModel'
+            }
+          }
+        }
       },
       400: {
         $ref: '#/components/badRequest'

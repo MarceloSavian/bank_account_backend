@@ -1,7 +1,7 @@
 export const accountPath = {
   get: {
     tags: ['Account'],
-    summary: 'Account Routes',
+    summary: 'Get user account',
     security: [{
       apiKeyAuth: []
     }],
@@ -10,7 +10,9 @@ export const accountPath = {
         description: 'Success',
         content: {
           'application/json': {
-            $ref: '#/schemas/account'
+            schema: {
+              $ref: '#/schemas/account'
+            }
           }
         }
       },
