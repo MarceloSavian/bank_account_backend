@@ -10,9 +10,19 @@ export const movementModelSchema = {
     date: {
       type: 'string'
     },
+    balance: {
+      type: 'number'
+    },
     id: {
       type: 'string'
     }
   },
   required: ['movementType', 'value', 'date']
+}
+
+export const movementsModelSchema = {
+  type: 'array',
+  items: {
+    $ref: '#/schemas/movementModel'
+  }
 }

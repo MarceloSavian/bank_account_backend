@@ -10,7 +10,8 @@ import {
   movementTypeSchema,
   accountSchema,
   movementModelSchema,
-  movementTypesSchema
+  movementTypesSchema,
+  movementsModelSchema
 } from './schemas/'
 
 export default {
@@ -52,7 +53,8 @@ export default {
     movementType: movementTypeSchema,
     movementTypes: movementTypesSchema,
     account: accountSchema,
-    movementModel: movementModelSchema
+    movementModel: movementModelSchema,
+    movementsModel: movementsModelSchema
   },
   components: {
     securitySchemes: {

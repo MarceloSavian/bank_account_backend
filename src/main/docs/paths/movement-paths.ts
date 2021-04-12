@@ -41,7 +41,7 @@ export const movementPath = {
         content: {
           'application/json': {
             schema: {
-              $ref: '#/schemas/movementModel'
+              $ref: '#/schemas/movementsModel'
             }
           }
         }
