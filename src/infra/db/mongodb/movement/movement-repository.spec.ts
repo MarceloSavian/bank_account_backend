@@ -1,7 +1,7 @@
 import { Collection } from 'mongodb'
 import MockDate from 'mockdate'
 import { mongoHelper } from '../helpers/mongo-helper'
-import { mockMovementParams } from '@/domain/test/mock-movement'
+import { mockMovementParamsRepo } from '@/domain/test/mock-movement'
 import { MovementMongoRepository } from './movement-mongo-repository'
 import { mockMovementTypeIn } from '@/domain/test/mock-movement-type'
 import { mockAccountModel } from '@/domain/test/mock-account'
@@ -43,14 +43,15 @@ describe('MovementMongoRepository', () => {
   describe('add()', () => {
     test('Should add an movement on database', async () => {
       const { sut } = mockSut()
-      await sut.add(mockMovementParams())
+      await sut.add(mockMovementParamsRepo())
       const movement = await movementCollection.findOne({})
       expect(movement).toBeTruthy()
       expect(movement?._id).toBeTruthy()
-      expect(movement?.value).toBe(mockMovementParams().value)
-      expect(movement?.accountId).toEqual(mockMovementParams().accountId)
-      expect(movement?.date).toEqual(mockMovementParams().date)
-      expect(movement?.movementType).toEqual(mockMovementParams().movementType)
+      expect(movement?.value).toBe(mockMovementParamsRepo().value)
+      expect(movement?.accountId).toEqual(mockMovementParamsRepo().accountId)
+      expect(movement?.balance).toEqual(mockMovementParamsRepo().balance)
+      expect(movement?.date).toEqual(mockMovementParamsRepo().date)
+      expect(movement?.movementType).toEqual(mockMovementParamsRepo().movementType)
     })
   })
   describe('getAll()', () => {

@@ -29,7 +29,7 @@ export class DbAddMovement implements AddMovement {
     if (movementType.type === 'out') accountBalance = account.balance - movementData.value
 
     await this.updateAccountRepository.update(movementData.accountId, accountBalance)
-    await this.addMovementRepository.add(movementData)
+    await this.addMovementRepository.add({ ...movementData, balance: accountBalance })
     return null
   }
 }

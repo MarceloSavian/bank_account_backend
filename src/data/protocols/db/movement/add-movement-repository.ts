@@ -1,5 +1,11 @@
-import { MovementParams } from '@/domain/usecases/movement/add-movement'
+export type MovementParamsRepo = {
+  value: number
+  date: Date
+  accountId: string
+  movementType: string
+  balance: number
+}
 
 export interface AddMovementRepository {
-  add: (movementData: MovementParams) => Promise<void>
+  add: (movementData: MovementParamsRepo) => Promise<void>
 }

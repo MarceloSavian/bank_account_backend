@@ -1,13 +1,12 @@
-import { AddMovementRepository } from '@/data/protocols/db/movement/add-movement-repository'
+import { AddMovementRepository, MovementParamsRepo } from '@/data/protocols/db/movement/add-movement-repository'
 import { GetMovementsRepository } from '@/data/protocols/db/movement/get-movements-repository'
 import { MovementModel } from '@/domain/models/movement'
-import { MovementParams } from '@/domain/usecases/movement/add-movement'
 import { ObjectId } from 'bson'
 import { mongoHelper } from '../helpers/mongo-helper'
 import { QueryBuilder } from '../helpers/query-builder'
 
 export class MovementMongoRepository implements AddMovementRepository, GetMovementsRepository {
-  async add (movementData: MovementParams): Promise<void> {
+  async add (movementData: MovementParamsRepo): Promise<void> {
     const collection = await mongoHelper.getCollection('movements')
     await collection.insertOne(movementData)
   }

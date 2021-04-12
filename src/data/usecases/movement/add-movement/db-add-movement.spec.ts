@@ -1,7 +1,7 @@
 import { DbAddMovement } from './db-add-movement'
 import { AddMovementRepository } from '@/data/protocols/db/movement/add-movement-repository'
 import { mockAddMovementRepository } from '@/data/test/mock-movement'
-import { mockMovementParams } from '@/domain/test/mock-movement'
+import { mockMovementParams, mockMovementParamsRepo } from '@/domain/test/mock-movement'
 import MockDate from 'mockdate'
 import { GetAccountRepository } from '@/data/protocols/db/account/get-account-repository'
 import { mockGetAccountRepository, mockUpdateAccountRepository } from '@/data/test/mock-db-account'
@@ -92,7 +92,7 @@ describe('DbAddMovement', () => {
     const { sut, addMovementRepositoryStub } = mockSut()
     const addSpy = jest.spyOn(addMovementRepositoryStub, 'add')
     await sut.add(mockMovementParams())
-    expect(addSpy).toHaveBeenCalledWith(mockMovementParams())
+    expect(addSpy).toHaveBeenCalledWith(mockMovementParamsRepo())
   })
   test('Should throws if AddMovementsRepository throws', async () => {
     const { sut, addMovementRepositoryStub } = mockSut()

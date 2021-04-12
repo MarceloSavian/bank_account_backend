@@ -1,3 +1,4 @@
+import { MovementParamsRepo } from '@/data/protocols/db/movement/add-movement-repository'
 import { MovementModel } from '../models/movement'
 import { MovementParams } from '../usecases/movement/add-movement'
 
@@ -18,4 +19,9 @@ export const mockMovementModel = (): MovementModel => ({
     name: 'any_name',
     type: 'in'
   }
+})
+
+export const mockMovementParamsRepo = (): MovementParamsRepo => ({
+  ...mockMovementParams(),
+  balance: 20
 })
