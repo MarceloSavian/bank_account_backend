@@ -8,7 +8,9 @@ import {
   signUpParamsSchema,
   movementParamsSchema,
   movementTypeSchema,
-  accountSchema
+  accountSchema,
+  movementModelSchema,
+  movementTypesSchema
 } from './schemas/'
 
 export default {
@@ -28,7 +30,7 @@ export default {
   tags: [{
     name: 'Login'
   }, {
-    name: 'Movement'
+    name: 'Movements'
   }, {
     name: 'MovementTypes'
   }, {
@@ -37,7 +39,7 @@ export default {
   paths: {
     '/login': loginPath,
     '/signup': signUpPath,
-    '/movement': movementPath,
+    '/movements': movementPath,
     '/movementTypes': movementTypePath,
     '/account': accountPath
   },
@@ -48,7 +50,9 @@ export default {
     signUpParams: signUpParamsSchema,
     movementParams: movementParamsSchema,
     movementType: movementTypeSchema,
-    account: accountSchema
+    movementTypes: movementTypesSchema,
+    account: accountSchema,
+    movementModel: movementModelSchema
   },
   components: {
     securitySchemes: {

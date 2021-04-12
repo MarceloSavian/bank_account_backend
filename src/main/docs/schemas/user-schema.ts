@@ -1,11 +1,31 @@
 export const userSchema = {
   type: 'object',
   properties: {
-    accessToken: {
+    token: {
       type: 'string'
     },
     user: {
-      type: 'object'
+      type: 'object',
+      properties: {
+        id: {
+          type: 'string'
+        },
+        name: {
+          type: 'string'
+        },
+        email: {
+          type: 'string'
+        },
+        password: {
+          type: 'string'
+        },
+        roles: {
+          type: 'array',
+          items: {
+            type: 'string'
+          }
+        }
+      }
     }
   }
 }

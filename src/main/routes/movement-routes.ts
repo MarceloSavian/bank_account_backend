@@ -5,6 +5,6 @@ import { makeGetMovementController } from '../factories/controllers/movements/ge
 import { auth } from '../middlewares/auth'
 
 export default (router: Router): void => {
-  router.post('/movement', auth, adaptRoute(makeAddMovementController()))
+  router.post('/movements', auth, adaptRoute(makeAddMovementController()))
   router.get('/movements', auth, adaptRoute(makeGetMovementController()))
 }

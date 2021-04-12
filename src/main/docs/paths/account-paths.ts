@@ -10,7 +10,9 @@ export const accountPath = {
         description: 'Success',
         content: {
           'application/json': {
-            $ref: '#/schemas/account'
+            schema: {
+              $ref: '#/schemas/account'
+            }
           }
         }
       },

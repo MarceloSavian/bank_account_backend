@@ -10,7 +10,9 @@ export const movementTypePath = {
         description: 'Success',
         content: {
           'application/json': {
-            $ref: '#/schemas/movementType'
+            schema: {
+              $ref: '#/schemas/movementTypes'
+            }
           }
         }
       },

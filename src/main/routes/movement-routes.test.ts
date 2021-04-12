@@ -25,7 +25,7 @@ describe('Auth routes', () => {
     accountCollection = await mongoHelper.getCollection('accounts')
     await accountCollection.deleteMany({})
   })
-  describe('POST /movement', () => {
+  describe('POST /movements', () => {
     test('Should return 200 on signup', async () => {
       const res = await request(app)
         .post('/api/signup')
@@ -46,7 +46,7 @@ describe('Auth routes', () => {
       const movementType = mongoHelper.map(insertMovement.ops[0]).id
       const account = await accountCollection.findOne({})
       await request(app)
-        .post('/api/movement')
+        .post('/api/movements')
         .set('x-access-token', token)
         .send({
           accountId: account._id, movementType, value: 20
