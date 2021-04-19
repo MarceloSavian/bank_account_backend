@@ -31,7 +31,7 @@ jobs:
           command: docker build -t $IMAGE_NAME:latest .
   publish-latest:
     environment:
-      IMAGE_NAME: building-on-ci
+      IMAGE_NAME: marcelosavian/bankaccountbackend
     working_directory: ~/repo
     docker:
       - image: circleci/node:12.4
