@@ -15,7 +15,8 @@
     "test:ci": "npm test -- --coverage",
     "test:coveralls": "npm run test:ci && coveralls < coverage/lcov.info",
     "up": "sudo npm run build && sudo docker-compose up -d",
-    "down": "sudo docker-compose down"
+    "down": "sudo docker-compose down",
+    "lint": "eslint 'src/**'"
   },
   "repository": {
     "type": "git",
