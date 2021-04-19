@@ -21,16 +21,17 @@ jobs:
       IMAGE_NAME: marcelosavian/bankaccountbackend
     docker:
       - image: circleci/buildpack-deps:stretch
+    working_directory: ~/repo
     steps:
       - checkout
       - setup_remote_docker
-      - run: npm install
       - run:
           name: Build Docker image
           command: docker build -t $IMAGE_NAME:latest .
   publish-latest:
     environment:
       IMAGE_NAME: building-on-ci
+    working_directory: ~/repo
     docker:
       - image: circleci/buildpack-deps:stretch
     steps:
