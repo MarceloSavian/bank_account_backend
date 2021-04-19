@@ -34,6 +34,7 @@ jobs:
       - image: circleci/buildpack-deps:stretch
     steps:
       - setup_remote_docker
+      - run: npm install
       - run:
           name: Publish Docker Image to Docker Hub
           command: |
